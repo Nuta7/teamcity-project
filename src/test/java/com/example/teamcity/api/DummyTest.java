@@ -1,9 +1,5 @@
 package com.example.teamcity.api;
 
-import com.example.teamcity.api.models.User;
-import com.example.teamcity.api.spec.Specifications;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import org.testng.annotations.Test;
 
 public class DummyTest extends BaseApiTest {
