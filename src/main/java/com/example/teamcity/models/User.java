@@ -1,5 +1,6 @@
 package com.example.teamcity.models;
 
+import com.example.teamcity.annotations.Parameterizable;
 import com.example.teamcity.annotations.Random;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -18,5 +19,6 @@ public class User extends BaseModel {
     private String username;
     @Random
     private String password;
+    @Parameterizable
     private Roles roles;
 }
