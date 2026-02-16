@@ -1,7 +1,6 @@
 package com.example.teamcity.models;
 
 import com.example.teamcity.annotations.Parameterizable;
-import com.example.teamcity.annotations.Random;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,14 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Build extends BaseModel {
-    @Random
-    private long id;
+public class Property extends BaseModel {
     @Parameterizable
-    private String status;
+    private String name;
     @Parameterizable
-    private String state;
-    @Parameterizable
-    private BuildType buildType;
-    private String buildTypeId;
+    private String value;
 }

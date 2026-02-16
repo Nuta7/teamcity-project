@@ -21,5 +21,6 @@ public class BuildType extends BaseModel {
     private String name;
     @Parameterizable
     private Project project;
+    @Parameterizable
     private Steps steps;
 }
