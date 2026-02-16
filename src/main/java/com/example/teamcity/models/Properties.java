@@ -1,6 +1,6 @@
 package com.example.teamcity.models;
 
-import com.example.teamcity.annotations.Parameterizable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,8 +12,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Steps {
-    private Integer count;
-    @Parameterizable
-    private List<Step> step;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Properties extends BaseModel {
+    private List<Property> property;
+
 }
