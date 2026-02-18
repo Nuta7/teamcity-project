@@ -4,11 +4,12 @@ import com.example.teamcity.enums.Endpoint;
 import com.example.teamcity.models.BaseModel;
 import com.example.teamcity.requests.CrudInterface;
 import com.example.teamcity.requests.Request;
+import com.example.teamcity.requests.SearchInterface;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class UncheckedBase extends Request implements CrudInterface {
+public class UncheckedBase extends Request implements CrudInterface, SearchInterface {
 
     public UncheckedBase(RequestSpecification spec, Endpoint endpoint) {
         super(spec, endpoint);
@@ -46,5 +47,14 @@ public class UncheckedBase extends Request implements CrudInterface {
                 .given()
                 .spec(spec)
                 .delete(endpoint.getUrl() + "/id:" + id);
+    }
+
+    @Override
+    public Response search(String locator) {
+        return RestAssured
+                .given()
+                .spec(spec)
+                .queryParam("locator", locator)
+                .get(endpoint.getUrl());
     }
 }
