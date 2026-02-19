@@ -1,6 +1,8 @@
 package com.example.teamcity.api;
 
+import com.example.teamcity.enums.BuildState;
 import com.example.teamcity.generators.RoleGenerator;
+import com.example.teamcity.generators.StepPropertyGenerator;
 import com.example.teamcity.models.*;
 import com.example.teamcity.requests.CheckedRequests;
 import com.example.teamcity.requests.UncheckedRequests;
@@ -107,17 +109,18 @@ public class BuildTypeTest extends BaseApiTest {
 
         userCheckRequests.<Project>getRequest(PROJECTS).create(testData.getProject());
 
-        var property1 = generate(Property.class, "script.content", "echo 'Hello World!'");
-        var property2 = generate(Property.class, "use.custom.script", "true");
-        var properties = Properties.builder()
-                        .property(List.of(property1, property2))
-                        .build();
 
-        var stepProperties = generate(Step.class, "Print Hello World");
-        stepProperties.setProperties(properties);
+        var scriptProperties = StepPropertyGenerator.generateScriptProperties("echo 'Hello World!'");
+
+        var step = Step.builder()
+                .name("Print Hello World")
+                .properties(scriptProperties)
+                .build();
+
         var steps = Steps.builder()
-                        .step(List.of(stepProperties))
-                        .build();
+                  .step(List.of(step))
+                  .build();
+
 
         userCheckRequests.getRequest(BUILD_TYPES).create(generate(BuildType.class, testData.getBuildType().getId(), testData.getBuildType().getProject(), steps));
 
@@ -132,6 +135,6 @@ public class BuildTypeTest extends BaseApiTest {
         var createdBuild = userCheckRequests.<Build>getRequest(BUILD_QUEUE).read(String.valueOf(buildResponse.getId()));
 
         softy.assertEquals(testData.getBuildType().getId(), createdBuild.getBuildTypeId());
-        softy.assertEquals("queued", createdBuild.getState());
+        softy.assertEquals(BuildState.QUEUED, createdBuild.getState());
     }
 }

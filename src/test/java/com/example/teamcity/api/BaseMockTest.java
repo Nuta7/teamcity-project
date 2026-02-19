@@ -1,6 +1,8 @@
 package com.example.teamcity.api;
 
 import com.example.teamcity.common.WireMock;
+import com.example.teamcity.enums.BuildState;
+import com.example.teamcity.enums.BuildStatus;
 import com.example.teamcity.generators.TestDataStorage;
 import com.example.teamcity.models.Build;
 import org.apache.http.HttpStatus;
@@ -25,10 +27,10 @@ public class BaseMockTest extends BaseApiTest{
         TestDataStorage.getStorage().clear();
         WireMock.stopServer();
     }
-    protected void setupBuildQueueStub(String state, String status) {
+    protected void setupBuildQueueStub(BuildState state, BuildStatus status) {
         setupBuildQueueStub(testData.getBuildType().getId(), state, status);
     }
-    protected void setupBuildQueueStub(String buildTypeId, String state, String status) {
+    protected void setupBuildQueueStub(String buildTypeId, BuildState state, BuildStatus status) {
         var fakeId = ThreadLocalRandom.current().nextLong(1000, 1000000);
         var fakeBuild = Build.builder()
                 .id(fakeId)

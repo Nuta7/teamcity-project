@@ -17,14 +17,9 @@ import static com.example.teamcity.enums.Endpoint.BUILD_QUEUE;
 @Feature("Start build")
     public class StartBuildTest extends BaseMockTest {
 
-    BuildState.FINISHED
-    BuildStatus.SUCCESS
-
-            WireMock.setupServer(post(BUILD_QUEUE.getUrl()), HttpStatus.SC_OK, fakeBuild);
-        }
-        @Test(description = "User should be able to start build (with WireMock)", groups = {"Regression"})
+    @Test(description = "User should be able to start build (with WireMock)", groups = {"Regression"})
         public void userStartsBuildWithWireMockTest() {
-            this.setupBuildQueueStub("finished","SUCCESS");
+        this.setupBuildQueueStub(BuildState.FINISHED, BuildStatus.SUCCESS);
             var checkedBuildQueueRequest = new CheckedBase<Build>(Specifications.mockSpec(), BUILD_QUEUE);
 
             var build = checkedBuildQueueRequest.create(Build.builder()
@@ -39,7 +34,7 @@ import static com.example.teamcity.enums.Endpoint.BUILD_QUEUE;
     @Test(description = "Build type should be started successfully with a echo 'Hello, world!'(with WireMock)", groups = {"Positive", "BuildType"})
     public void startBuildTypeWithAMessage(){
         var buildTypeId = testData.getBuildType().getId();
-        this.setupBuildQueueStub(buildTypeId, "queued","UNKNOWN");
+        this.setupBuildQueueStub(buildTypeId, BuildState.QUEUED, BuildStatus.UNKNOWN);
 
         var mockRequests = new CheckedRequests(Specifications.mockSpec());
         var buildResponse = mockRequests.<Build>getRequest(BUILD_QUEUE).create(
@@ -53,7 +48,7 @@ import static com.example.teamcity.enums.Endpoint.BUILD_QUEUE;
         var createdBuild = mockRequests.<Build>getRequest(BUILD_QUEUE).read(String.valueOf(buildResponse.getId()));
 
         softy.assertEquals(testData.getBuildType().getId(), createdBuild.getBuildTypeId());
-        softy.assertEquals("queued", createdBuild.getState());
+        softy.assertEquals(BuildState.QUEUED, createdBuild.getState());
     }
 
     }

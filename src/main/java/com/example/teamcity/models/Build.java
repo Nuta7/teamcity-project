@@ -23,4 +23,5 @@ public class Build extends BaseModel {
     @Parameterizable
     private BuildState state;
     private BuildType buildType;
+    private String buildTypeId;
 }
