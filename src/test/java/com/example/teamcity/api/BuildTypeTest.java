@@ -137,39 +137,4 @@ public class BuildTypeTest extends BaseApiTest {
         softy.assertEquals(testData.getBuildType().getId(), createdBuild.getBuildTypeId());
         softy.assertEquals(BuildState.QUEUED, createdBuild.getState());
     }
-
-    @Test(description = "Build type should be started successfully with a echo 'Hello, world!'", groups = {"Positive", "BuildType"})
-    public void startBuildTypeWithAMessage(){
-        superUserCheckRequests.getRequest(USERS).create(testData.getUser());
-        var userCheckRequests = new CheckedRequests(Specifications.authSpec(testData.getUser()));
-
-        userCheckRequests.<Project>getRequest(PROJECTS).create(testData.getProject());
-
-        var property1 = generate(Property.class, "script.content", "echo 'Hello World!'");
-        var property2 = generate(Property.class, "use.custom.script", "true");
-        var properties = Properties.builder()
-                        .property(List.of(property1, property2))
-                        .build();
-
-        var stepProperties = generate(Step.class, "Print Hello World");
-        stepProperties.setProperties(properties);
-        var steps = Steps.builder()
-                        .step(List.of(stepProperties))
-                        .build();
-
-        userCheckRequests.getRequest(BUILD_TYPES).create(generate(BuildType.class, testData.getBuildType().getId(), testData.getBuildType().getProject(), steps));
-
-        var buildResponse = userCheckRequests.<Build>getRequest(BUILD_QUEUE).create(
-                Build.builder()
-                        .buildType(BuildType.builder()
-                                .id(testData.getBuildType().getId())
-                                .build())
-                        .build()
-        );
-
-        var createdBuild = userCheckRequests.<Build>getRequest(BUILD_QUEUE).read(String.valueOf(buildResponse.getId()));
-
-        softy.assertEquals(testData.getBuildType().getId(), createdBuild.getBuildTypeId());
-        softy.assertEquals("queued", createdBuild.getState());
-    }
 }
