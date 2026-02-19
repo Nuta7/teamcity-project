@@ -1,11 +1,12 @@
 package com.example.teamcity.api;
 
+import com.example.teamcity.generators.RoleGenerator;
 import com.example.teamcity.models.*;
 import com.example.teamcity.requests.CheckedRequests;
+import com.example.teamcity.requests.UncheckedRequests;
 import com.example.teamcity.requests.unchecked.UncheckedBase;
 import com.example.teamcity.spec.Specifications;
-import org.apache.http.HttpStatus;
-import org.hamcrest.Matchers;
+import com.example.teamcity.spec.ValidationResponseSpecifications;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -44,17 +45,16 @@ public class BuildTypeTest extends BaseApiTest {
         userCheckRequests.getRequest(BUILD_TYPES).create(testData.getBuildType());
         new UncheckedBase(Specifications.authSpec(testData.getUser()), BUILD_TYPES)
                 .create(buildTypeWithSameId)
-                .then().assertThat().statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body("errors[0].message",Matchers.equalTo("The build configuration / template ID \"%s\" is already used by another configuration or template".formatted(testData.getBuildType().getId())));
+                .then().spec(ValidationResponseSpecifications
+                .checkUserCantCreateTwoBuildTypesWithTheSameId(testData.getBuildType().getId()));
     }
 
     @Test(description = "Project admin should be able to create build type for their project", groups = {"Positive", "Roles"})
     public void projectAdminCreatesBuildTypeTest() {
         superUserCheckRequests.<Project>getRequest(PROJECTS).create(testData.getProject());
 
-        var projectAdminRole = generate(Role.class,"PROJECT_ADMIN", "p:" + testData.getProject().getId());
         var roleAssignments = Roles.builder()
-                .role(List.of(projectAdminRole))
+                .role(List.of(RoleGenerator.generateProjectAdmin(testData.getProject().getId())))
                 .build();
 
         var userWithRole = testData.getUser();
@@ -73,11 +73,9 @@ public class BuildTypeTest extends BaseApiTest {
     @Test(description = "Project admin should not be able to create build type for not their project", groups = {"Negative", "Roles"})
     public void projectAdminCreatesBuildTypeForAnotherUserProjectTest() {
         var project1 = superUserCheckRequests.<Project>getRequest(PROJECTS).create(generate(Project.class));
-        var internalId = superUserCheckRequests.<Project>getRequest(PROJECTS).read(project1.getId() +"?fields=internalId");
-
-        var projectAdminRole1 = generate(Role.class,"PROJECT_ADMIN", "p:" + project1.getId());
+        var internalId = superUserCheckRequests.<Project>getRequest(PROJECTS).read(project1.getId() +"?fields=internalId").getInternalId();
         var roleAssignments1 = Roles.builder()
-                .role(List.of(projectAdminRole1))
+                .role(List.of(RoleGenerator.generateProjectAdmin(project1.getId())))
                 .build();
         var userWithRole1 = generate(User.class);
         userWithRole1.setRoles(roleAssignments1);
@@ -85,9 +83,8 @@ public class BuildTypeTest extends BaseApiTest {
 
 
         var project2 = superUserCheckRequests.<Project>getRequest(PROJECTS).create(generate(Project.class));
-        var projectAdminRole2 = generate(Role.class,"PROJECT_ADMIN", "p:" + project2.getId());
         var roleAssignments2 = Roles.builder()
-                .role(List.of(projectAdminRole2))
+                .role(List.of(RoleGenerator.generateProjectAdmin(project2.getId())))
                 .build();
         var userWithRole2 = generate(User.class);
         userWithRole2.setRoles(roleAssignments2);
@@ -96,9 +93,10 @@ public class BuildTypeTest extends BaseApiTest {
         var buildType = generate(BuildType.class);
         buildType.setProject(project1);
 
-        new UncheckedBase(Specifications.authSpec(userWithRole2), BUILD_TYPES)
+        UncheckedRequests.userRequest(userWithRole2)
+                .getRequest(BUILD_TYPES)
                 .create(buildType)
-                .then().assertThat().statusCode(HttpStatus.SC_FORBIDDEN)
-                .body("errors[0].message",Matchers.equalTo("You do not have enough permissions to access project with internal id: %s".formatted(internalId)));
+                .then().spec(ValidationResponseSpecifications
+                .checkProjectAdminCantCreateBuildTypeForAnotherUserProject(String.valueOf(internalId)));
     }
 }

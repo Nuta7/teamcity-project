@@ -1,5 +1,7 @@
 package com.example.teamcity.api;
 
+import com.example.teamcity.enums.BuildState;
+import com.example.teamcity.enums.BuildStatus;
 import com.example.teamcity.models.Build;
 import com.example.teamcity.requests.checked.CheckedBase;
 import com.example.teamcity.spec.Specifications;
@@ -20,8 +22,8 @@ import static com.example.teamcity.enums.Endpoint.BUILD_QUEUE;
         @BeforeMethod
         public void setupWireMockServer() {
             var fakeBuild = Build.builder()
-                    .state("finished")
-                    .status("SUCCESS")
+                    .state(BuildState.FINISHED)
+                    .status(BuildStatus.SUCCESS)
                     .build();
 
             WireMock.setupServer(post(BUILD_QUEUE.getUrl()), HttpStatus.SC_OK, fakeBuild);
@@ -34,8 +36,8 @@ import static com.example.teamcity.enums.Endpoint.BUILD_QUEUE;
                     .buildType(testData.getBuildType())
                     .build());
 
-            softy.assertEquals(build.getState(),"finished");
-            softy.assertEquals(build.getStatus(), "SUCCESS");
+            softy.assertEquals(build.getState(), BuildState.FINISHED);
+            softy.assertEquals(build.getStatus(), BuildStatus.SUCCESS);
         }
 
 
