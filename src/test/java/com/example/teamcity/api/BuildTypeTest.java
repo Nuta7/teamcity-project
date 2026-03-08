@@ -1,6 +1,8 @@
 package com.example.teamcity.api;
 
+import com.example.teamcity.enums.BuildState;
 import com.example.teamcity.generators.RoleGenerator;
+import com.example.teamcity.generators.StepPropertyGenerator;
 import com.example.teamcity.models.*;
 import com.example.teamcity.requests.CheckedRequests;
 import com.example.teamcity.requests.UncheckedRequests;
@@ -98,5 +100,41 @@ public class BuildTypeTest extends BaseApiTest {
                 .create(buildType)
                 .then().spec(ValidationResponseSpecifications
                 .checkProjectAdminCantCreateBuildTypeForAnotherUserProject(String.valueOf(internalId)));
+    }
+
+    @Test(description = "Build type should be started successfully with a echo 'Hello, world!'", groups = {"Positive", "BuildType"})
+    public void startBuildTypeWithAMessage(){
+        superUserCheckRequests.getRequest(USERS).create(testData.getUser());
+        var userCheckRequests = new CheckedRequests(Specifications.authSpec(testData.getUser()));
+
+        userCheckRequests.<Project>getRequest(PROJECTS).create(testData.getProject());
+
+
+        var scriptProperties = StepPropertyGenerator.generateScriptProperties("echo 'Hello World!'");
+
+        var step = Step.builder()
+                .name("Print Hello World")
+                .properties(scriptProperties)
+                .build();
+
+        var steps = Steps.builder()
+                  .step(List.of(step))
+                  .build();
+
+
+        userCheckRequests.getRequest(BUILD_TYPES).create(generate(BuildType.class, testData.getBuildType().getId(), testData.getBuildType().getProject(), steps));
+
+        var buildResponse = userCheckRequests.<Build>getRequest(BUILD_QUEUE).create(
+                Build.builder()
+                        .buildType(BuildType.builder()
+                                .id(testData.getBuildType().getId())
+                                .build())
+                        .build()
+        );
+
+        var createdBuild = userCheckRequests.<Build>getRequest(BUILD_QUEUE).read(String.valueOf(buildResponse.getId()));
+
+        softy.assertEquals(testData.getBuildType().getId(), createdBuild.getBuildTypeId());
+        softy.assertEquals(BuildState.QUEUED, createdBuild.getState());
     }
 }

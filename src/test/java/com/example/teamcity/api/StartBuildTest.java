@@ -2,34 +2,24 @@ package com.example.teamcity.api;
 
 import com.example.teamcity.enums.BuildState;
 import com.example.teamcity.enums.BuildStatus;
+import com.example.teamcity.common.WireMock;
 import com.example.teamcity.models.Build;
+import com.example.teamcity.models.BuildType;
+import com.example.teamcity.requests.CheckedRequests;
 import com.example.teamcity.requests.checked.CheckedBase;
 import com.example.teamcity.spec.Specifications;
-import com.example.teamcity.common.WireMock;
 import io.qameta.allure.Feature;
-import org.apache.http.HttpStatus;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.example.teamcity.enums.Endpoint.BUILD_QUEUE;
 
 
-    @Feature("Start build")
-    public class StartBuildTest extends BaseApiTest {
+@Feature("Start build")
+    public class StartBuildTest extends BaseMockTest {
 
-        @BeforeMethod
-        public void setupWireMockServer() {
-            var fakeBuild = Build.builder()
-                    .state(BuildState.FINISHED)
-                    .status(BuildStatus.SUCCESS)
-                    .build();
-
-            WireMock.setupServer(post(BUILD_QUEUE.getUrl()), HttpStatus.SC_OK, fakeBuild);
-        }
-        @Test(description = "User should be able to start build (with WireMock)", groups = {"Regression"})
+    @Test(description = "User should be able to start build (with WireMock)", groups = {"Regression"})
         public void userStartsBuildWithWireMockTest() {
+        this.setupBuildQueueStub(BuildState.FINISHED, BuildStatus.SUCCESS);
             var checkedBuildQueueRequest = new CheckedBase<Build>(Specifications.mockSpec(), BUILD_QUEUE);
 
             var build = checkedBuildQueueRequest.create(Build.builder()
@@ -41,9 +31,25 @@ import static com.example.teamcity.enums.Endpoint.BUILD_QUEUE;
         }
 
 
-        @AfterMethod(alwaysRun = true)
-        public void stopWireMockServer() {
-            WireMock.stopServer();
-        }
+    @Test(description = "Build type should be started successfully with a echo 'Hello, world!'(with WireMock)", groups = {"Positive", "BuildType"})
+    public void startBuildTypeWithAMessage(){
+        var buildTypeId = testData.getBuildType().getId();
+        this.setupBuildQueueStub(buildTypeId, BuildState.QUEUED, BuildStatus.UNKNOWN);
+
+        var mockRequests = new CheckedRequests(Specifications.mockSpec());
+        var buildResponse = mockRequests.<Build>getRequest(BUILD_QUEUE).create(
+                Build.builder()
+                        .buildType(BuildType.builder()
+                                .id(buildTypeId)
+                                .build())
+                        .build()
+        );
+
+        var createdBuild = mockRequests.<Build>getRequest(BUILD_QUEUE).read(String.valueOf(buildResponse.getId()));
+
+        softy.assertEquals(testData.getBuildType().getId(), createdBuild.getBuildTypeId());
+        softy.assertEquals(BuildState.QUEUED, createdBuild.getState());
+    }
+
     }
 

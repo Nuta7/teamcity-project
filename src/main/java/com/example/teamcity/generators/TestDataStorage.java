@@ -68,4 +68,8 @@ public class TestDataStorage {
 
         createdEntitiesMap.clear();
     }
+
+    public void clear(){
+        createdEntitiesMap.clear();
+    }
 }
