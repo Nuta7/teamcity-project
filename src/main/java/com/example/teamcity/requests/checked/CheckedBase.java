@@ -1,6 +1,7 @@
 package com.example.teamcity.requests.checked;
 
 import com.example.teamcity.enums.Endpoint;
+import com.example.teamcity.enums.SearchLocator;
 import com.example.teamcity.generators.TestDataStorage;
 import com.example.teamcity.models.BaseModel;
 import com.example.teamcity.requests.CrudInterface;
@@ -57,10 +58,11 @@ public final class CheckedBase<T extends BaseModel> extends Request implements C
 
     @Override
     public T search(String locator) {
-        return (T) uncheckedBase
-                .search(locator)
-                .then().assertThat().statusCode(HttpStatus.SC_OK)
-                .extract().as(endpoint.getModelClass());
+        return (T) search(locator, endpoint.getModelClass());
+    }
+
+    public <R> R search(SearchLocator key, Object value, Class<R> responseClass) {
+        return search(key.build(value), responseClass);
     }
 
     public <ResultClass> ResultClass search(String locator, Class<ResultClass> responseClass) {

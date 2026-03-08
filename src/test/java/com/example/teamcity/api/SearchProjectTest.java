@@ -1,6 +1,7 @@
 package com.example.teamcity.api;
 
 
+import com.example.teamcity.enums.SearchLocator;
 import com.example.teamcity.models.Projects;
 import com.example.teamcity.requests.CheckedRequests;
 import com.example.teamcity.spec.Specifications;
@@ -19,7 +20,7 @@ public class SearchProjectTest extends BaseApiTest {
        var projectData = testData.getProject();
        userCheckRequests.getRequest(PROJECTS).create(projectData);
 
-       var foundProjects = userCheckRequests.getRequest(PROJECTS).search("name:" + projectData.getName(), Projects.class);
+       var foundProjects = userCheckRequests.getRequest(PROJECTS).search(SearchLocator.NAME, projectData.getName(), Projects.class);
 
        softy.assertEquals(foundProjects.getProject().get(0).getName(), projectData.getName());
    }
