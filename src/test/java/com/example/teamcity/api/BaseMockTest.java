@@ -1,17 +1,17 @@
 package com.example.teamcity.api;
 
 import com.example.teamcity.common.WireMock;
-import com.example.teamcity.enums.BuildState;
-import com.example.teamcity.enums.BuildStatus;
-import com.example.teamcity.generators.TestDataStorage;
-import com.example.teamcity.models.Build;
+import com.example.teamcity.api.enums.BuildState;
+import com.example.teamcity.api.enums.BuildStatus;
+import com.example.teamcity.api.generators.TestDataStorage;
+import com.example.teamcity.api.models.Build;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.example.teamcity.enums.Endpoint.BUILD_QUEUE;
+import static com.example.teamcity.api.enums.Endpoint.BUILD_QUEUE;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 

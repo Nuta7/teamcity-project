@@ -1,21 +1,21 @@
 package com.example.teamcity.api;
 
-import com.example.teamcity.enums.BuildState;
-import com.example.teamcity.generators.RoleGenerator;
-import com.example.teamcity.generators.StepPropertyGenerator;
-import com.example.teamcity.models.*;
-import com.example.teamcity.requests.CheckedRequests;
-import com.example.teamcity.requests.UncheckedRequests;
-import com.example.teamcity.requests.unchecked.UncheckedBase;
-import com.example.teamcity.spec.Specifications;
-import com.example.teamcity.spec.ValidationResponseSpecifications;
+import com.example.teamcity.api.enums.BuildState;
+import com.example.teamcity.api.generators.RoleGenerator;
+import com.example.teamcity.api.generators.StepPropertyGenerator;
+import com.example.teamcity.api.models.*;
+import com.example.teamcity.api.requests.CheckedRequests;
+import com.example.teamcity.api.requests.UncheckedRequests;
+import com.example.teamcity.api.requests.unchecked.UncheckedBase;
+import com.example.teamcity.api.spec.Specifications;
+import com.example.teamcity.api.spec.ValidationResponseSpecifications;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.example.teamcity.enums.Endpoint.*;
-import static com.example.teamcity.generators.TestDataGenerator.generate;
+import static com.example.teamcity.api.enums.Endpoint.*;
+import static com.example.teamcity.api.generators.TestDataGenerator.generate;
 
 
 @Test(groups = {"Regression"})

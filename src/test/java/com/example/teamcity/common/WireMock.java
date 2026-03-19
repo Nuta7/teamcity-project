@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
-import com.example.teamcity.models.BaseModel;
+import com.example.teamcity.api.models.BaseModel;
 import lombok.SneakyThrows;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
