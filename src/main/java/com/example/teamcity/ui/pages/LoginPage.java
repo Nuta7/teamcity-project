@@ -1,5 +1,6 @@
 package com.example.teamcity.ui.pages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.example.teamcity.api.models.User;
@@ -12,8 +13,6 @@ public class LoginPage extends BasePage {
     private SelenideElement inputUsername = $("#username");
     private SelenideElement inputPassword = $("#password");
     private SelenideElement inputSubmitLogin = $(".loginButton");
-
-    public SelenideElement inputSubmitLogin2 = $(".loginButton");
 
     public static LoginPage open () {
         return Selenide.open(LOGIN_URL, LoginPage.class);

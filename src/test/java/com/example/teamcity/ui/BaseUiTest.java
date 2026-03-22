@@ -4,6 +4,9 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.example.teamcity.BaseTest;
 import com.example.teamcity.api.config.Config;
+import com.example.teamcity.api.enums.Endpoint;
+import com.example.teamcity.api.models.User;
+import com.example.teamcity.ui.pages.LoginPage;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeSuite;
@@ -20,19 +23,26 @@ public class BaseUiTest extends BaseTest {
         Configuration.remote = Config.getProperty("remote");
         Configuration.browserSize = Config.getProperty("browserSize");
 
-        Configuration.browserCapabilities.setCapability("selenoid:options", Map.of("enableVNC", true, "enableLog", true));
+        Configuration.browserCapabilities.setCapability("selenoid:options", Map.of("enableVNC", false, "enableLog", false));
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-gpu");
+        options.addArguments("--disable-extensions");
         Configuration.browserCapabilities.setCapability(ChromeOptions.CAPABILITY, options);
         Configuration.pageLoadTimeout = 60000;
+        Configuration.pollingInterval = 15000;
 
     }
 
     @AfterMethod(alwaysRun = true)
     public void closeWebDriver() {
         Selenide.closeWebDriver();
+    }
+
+    protected void loginAs(User user) {
+        superUserCheckRequests.getRequest(Endpoint.USERS).create(testData.getUser());
+        LoginPage.open().login(testData.getUser());
     }
 }

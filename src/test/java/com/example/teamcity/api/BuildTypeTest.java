@@ -29,7 +29,7 @@ public class BuildTypeTest extends BaseApiTest {
 
         userCheckRequests.getRequest(BUILD_TYPES).create(testData.getBuildType());
 
-        var createdBuildType = userCheckRequests.<BuildType>getRequest(BUILD_TYPES).read(testData.getBuildType().getId());
+        var createdBuildType = userCheckRequests.<BuildType>getRequest(BUILD_TYPES).read("/id:" + testData.getBuildType().getId());
 
         softy.assertEquals(testData.getBuildType().getName(), createdBuildType.getName(), "Build type name is not correct");
     }
@@ -67,7 +67,7 @@ public class BuildTypeTest extends BaseApiTest {
 
         userCheckRequests.getRequest(BUILD_TYPES).create(testData.getBuildType());
 
-        var createdBuildType = userCheckRequests.<BuildType>getRequest(BUILD_TYPES).read(testData.getBuildType().getId());
+        var createdBuildType = userCheckRequests.<BuildType>getRequest(BUILD_TYPES).read("/id:" + testData.getBuildType().getId());
 
         softy.assertEquals(testData.getBuildType().getProject().getId(), createdBuildType.getProject().getId(), "Project id is not correct");
     }
@@ -75,7 +75,7 @@ public class BuildTypeTest extends BaseApiTest {
     @Test(description = "Project admin should not be able to create build type for not their project", groups = {"Negative", "Roles"})
     public void projectAdminCreatesBuildTypeForAnotherUserProjectTest() {
         var project1 = superUserCheckRequests.<Project>getRequest(PROJECTS).create(generate(Project.class));
-        var internalId = superUserCheckRequests.<Project>getRequest(PROJECTS).read(project1.getId() +"?fields=internalId").getInternalId();
+        var internalId = superUserCheckRequests.<Project>getRequest(PROJECTS).read("/id:" + project1.getId() +"?fields=internalId").getInternalId();
         var roleAssignments1 = Roles.builder()
                 .role(List.of(RoleGenerator.generateProjectAdmin(project1.getId())))
                 .build();
@@ -132,7 +132,7 @@ public class BuildTypeTest extends BaseApiTest {
                         .build()
         );
 
-        var createdBuild = userCheckRequests.<Build>getRequest(BUILD_QUEUE).read(String.valueOf(buildResponse.getId()));
+        var createdBuild = userCheckRequests.<Build>getRequest(BUILD_QUEUE).read("/id:" + String.valueOf(buildResponse.getId()));
 
         softy.assertEquals(testData.getBuildType().getId(), createdBuild.getBuildTypeId());
         softy.assertEquals(BuildState.QUEUED, createdBuild.getState());
