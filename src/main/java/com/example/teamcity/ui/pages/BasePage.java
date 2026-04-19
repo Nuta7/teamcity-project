@@ -18,7 +18,7 @@ public abstract class BasePage {
     }
 
     // ElementCollection: Selenide Element 1, Selenide Element 2 и тд
-    // collection.stream() -> Конвеер: Selenide Element 1, Selenide Element 2 и тд
+    // collection.stream() -> Конвейер: Selenide Element 1, Selenide Element 2 и тд
     // creator(Selenide Element 1) -> T -> add to list
     // creator(Selenide Element 2) -> T -> add to list
 }
