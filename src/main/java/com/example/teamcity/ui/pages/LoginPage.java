@@ -1,6 +1,5 @@
 package com.example.teamcity.ui.pages;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.example.teamcity.api.models.User;
@@ -24,6 +23,6 @@ public class LoginPage extends BasePage {
         inputPassword.val(user.getPassword());
         inputSubmitLogin.click();
 
-        return Selenide.page(ProjectsPage.class);
+        return Selenide.page(ProjectsPage.class).waitUntilPageIsLoaded();
     }
 }

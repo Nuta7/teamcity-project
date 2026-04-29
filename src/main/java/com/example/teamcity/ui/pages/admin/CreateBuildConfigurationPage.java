@@ -25,4 +25,11 @@ public class CreateBuildConfigurationPage extends CreateBasePage{
         branchInput.val(branch);
         submitButton.click();
     }
+
+    public static String transformId(String projectId, String buildName) {
+        String noUnderscore = buildName.replace("_", "");
+        String capitalizedName = noUnderscore.substring(0, 1).toUpperCase() + noUnderscore.substring(1);
+        return projectId + "_" + capitalizedName;
+    }
+
 }

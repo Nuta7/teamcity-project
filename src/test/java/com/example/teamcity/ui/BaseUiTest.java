@@ -33,6 +33,7 @@ public class BaseUiTest extends BaseTest {
         Configuration.browserCapabilities.setCapability(ChromeOptions.CAPABILITY, options);
         Configuration.pageLoadTimeout = 60000;
         Configuration.pollingInterval = 15000;
+        Configuration.timeout = 20000;
 
     }
 
@@ -42,7 +43,10 @@ public class BaseUiTest extends BaseTest {
     }
 
     protected void loginAs(User user) {
-        superUserCheckRequests.getRequest(Endpoint.USERS).create(testData.getUser());
-        LoginPage.open().login(testData.getUser());
+        LoginPage.open().login(user);
+    }
+
+    protected User createTestUser(){
+        return superUserCheckRequests.<User>getRequest(Endpoint.USERS).create(testData.getUser());
     }
 }

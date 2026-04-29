@@ -17,6 +17,7 @@ public class CreateProjectTest extends BaseUiTest {
     @Test(description = "User should be able to create project", groups = {"Positive"})
     public void userCreatesProject(){
         // подготовка окружения
+        createTestUser();
         loginAs(testData.getUser());
 
         // взаимодействие с UI

@@ -1,13 +1,15 @@
 package com.example.teamcity.ui.pages;
 
-import com.codeborne.selenide.Condition;
+
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.example.teamcity.ui.elements.ProjectElement;
+import org.openqa.selenium.By;
 
 import java.util.List;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -18,7 +20,9 @@ public class ProjectsPage extends BasePage {
 
     private SelenideElement spanFavoriteProjects = $("span[class='ProjectPageHeader__title--ih']");
 
-    private SelenideElement header = $(".MainPanel__router--gF > div");
+    private SelenideElement header = $(".MainPanel-module__router--JB");
+
+    private static SelenideElement searchField = $("[data-test='sidebar-search']");
 
     // ElementCollection -> List<ProjectElement>
     // UI elements -> List<Object>
@@ -28,11 +32,19 @@ public class ProjectsPage extends BasePage {
         return Selenide.open(PROJECTS_URL, ProjectsPage.class);
     }
 
-    public ProjectsPage() {
-        header.shouldBe(Condition.visible, BASE_WAITING);
+
+    public ProjectsPage waitUntilPageIsLoaded() {
+        header.shouldBe(visible, BASE_WAITING);
+        return this;
     }
 
     public List<ProjectElement> getProjects() {
         return generatePageElements(projectElements, ProjectElement::new);
+    }
+
+    public static ProjectPage searchProjectByName(String projectName) {
+        searchField.val(projectName).pressEnter();
+        $(By.linkText(projectName)).shouldBe(visible, BASE_WAITING).click();
+        return new ProjectPage();
     }
 }
