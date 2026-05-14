@@ -2,6 +2,7 @@ package com.example.teamcity.ui;
 
 import com.codeborne.selenide.Condition;
 import com.example.teamcity.api.enums.Endpoint;
+import com.example.teamcity.api.enums.LocatorType;
 import com.example.teamcity.api.models.BuildType;
 import com.example.teamcity.api.models.Project;
 import com.example.teamcity.api.requests.CheckedRequests;
@@ -29,18 +30,15 @@ public class CreateBuildConfigurationTest extends BaseUiTest {
         var createdProject = userCheckRequests.<Project>getRequest(PROJECTS).create(testData.getProject());
 
         loginAs(testData.getUser());
-
         CreateBuildConfigurationPage.open(createdProject.getId())
                 .createForm(REPO_URL)
-                .setupBuildConfiguration(testData.getBuildType().getName(), DEFAULT_BRANCH);
-
+                .setupBuildConfigurationAndWait(testData.getBuildType().getName(), DEFAULT_BRANCH);
         var expectedBuildId = CreateBuildConfigurationPage.transformId(createdProject.getId(), testData.getBuildType().getName());
-
-        var createdBuildConfiguration = userCheckRequests.<BuildType>getRequest(Endpoint.BUILD_TYPES).read("id:" + expectedBuildId);
-        softy.assertNotNull(createdBuildConfiguration);
-
-        BuildConfigurationPage.open(createdBuildConfiguration.getId())
+        BuildConfigurationPage.open(expectedBuildId)
                 .title.shouldHave(Condition.exactText(testData.getBuildType().getName()));
+
+        var createdBuildConfiguration = userCheckRequests.<BuildType>getRequest(Endpoint.BUILD_TYPES).read(LocatorType.ID.format(expectedBuildId));
+        softy.assertNotNull(createdBuildConfiguration);
     }
 
 
@@ -51,15 +49,13 @@ public class CreateBuildConfigurationTest extends BaseUiTest {
         var createdProject = userCheckRequests.<Project>getRequest(PROJECTS).create(testData.getProject());
 
         loginAs(testData.getUser());
-
         CreateBuildConfigurationPage.open(createdProject.getId())
                 .createForm(REPO_URL)
                 .setupBuildConfiguration(null, DEFAULT_BRANCH);
-
         var expectedBuildId = CreateBuildConfigurationPage.transformId(createdProject.getId(), testData.getBuildType().getName());
 
         new UncheckedBase(Specifications.authSpec(testData.getUser()), BUILD_TYPES)
-                .read("id:" + expectedBuildId)
+                .read(LocatorType.ID.format(expectedBuildId))
                 .then().spec(ValidationResponseSpecifications.checkUserCantCreateBuildTypeWithoutName(expectedBuildId));
     }
 

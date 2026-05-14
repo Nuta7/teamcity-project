@@ -1,5 +1,6 @@
 package com.example.teamcity.ui.pages.admin;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 
@@ -24,6 +25,13 @@ public class CreateBuildConfigurationPage extends CreateBasePage{
         buildTypeNameInput.val(buildTypeName);
         branchInput.val(branch);
         submitButton.click();
+    }
+
+    public void setupBuildConfigurationAndWait(String buildTypeName, String branch) {
+        buildTypeNameInput.val(buildTypeName);
+        branchInput.val(branch);
+        submitButton.click();
+        submitButton.shouldBe(Condition.disappear, BASE_WAITING);
     }
 
     public static String transformId(String projectId, String buildName) {

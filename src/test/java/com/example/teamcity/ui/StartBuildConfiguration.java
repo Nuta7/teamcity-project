@@ -12,6 +12,9 @@ import static com.example.teamcity.api.enums.Endpoint.BUILD_TYPES;
 import static com.example.teamcity.api.enums.Endpoint.PROJECTS;
 
 public class StartBuildConfiguration extends BaseUiTest{
+    private static final String  STEP_NAME = "Print Hello World";
+    private static final String  STEP_COMMAND = "echo 'Hello World'";
+    private static final String MESSAGE = "Hello World";
     @Test(description = "User should be able to create a build configuration", groups = {"Positive"})
     public void userCreatesBuild() {
         createTestUser();
@@ -23,9 +26,9 @@ public class StartBuildConfiguration extends BaseUiTest{
 
         BuildConfigurationPage.open(testData.getBuildType().getId()).clickSettingsButton().clickBuildStepsButton().addBuildStep();
         EditRunTypePage.open(testData.getBuildType().getId()).clickOnCommandLine();
-        EditRunTypePage.open(testData.getBuildType().getId()).createBuildStep("Print Hello World", "echo 'Hello World'");
+        EditRunTypePage.open(testData.getBuildType().getId()).createBuildStep(STEP_NAME, STEP_COMMAND);
         var build = EditBuildRunnersPage.open(testData.getBuildType().getId()).runBuild();
-        softy.assertEquals(build.clickBuildLogTab().checkLogs("Hello World"), "Hello World");
+        softy.assertEquals(build.clickBuildLogTab().checkLogs(MESSAGE), MESSAGE);
 
     }
 }

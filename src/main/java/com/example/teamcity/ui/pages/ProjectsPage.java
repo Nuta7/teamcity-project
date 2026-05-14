@@ -1,6 +1,7 @@
 package com.example.teamcity.ui.pages;
 
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
@@ -16,11 +17,12 @@ import static com.codeborne.selenide.Selenide.$$;
 public class ProjectsPage extends BasePage {
     private static final String PROJECTS_URL = "/favorite/projects";
 
-    private ElementsCollection projectElements = $$("div[class*='Subproject__container']");
+    private ElementsCollection projectElements = $$("div[class*='Subproject-module__container']");
 
     private SelenideElement spanFavoriteProjects = $("span[class='ProjectPageHeader__title--ih']");
 
-    private SelenideElement header = $(".MainPanel-module__router--JB");
+    private SelenideElement headerLogin = $(".MainPanel-module__router--JB");
+    private SelenideElement headerProjectsPage = $("[class*='ProjectPageHeader-module__title']");
 
     private static SelenideElement searchField = $("[data-test='sidebar-search']");
 
@@ -28,17 +30,23 @@ public class ProjectsPage extends BasePage {
     // UI elements -> List<Object>
     // ElementCollection -> List<BasePageElement>
 
+
     public static ProjectsPage open() {
         return Selenide.open(PROJECTS_URL, ProjectsPage.class);
     }
 
+    public ProjectsPage() {
+        headerProjectsPage.shouldBe(Condition.visible, BASE_WAITING);
+    }
+
 
     public ProjectsPage waitUntilPageIsLoaded() {
-        header.shouldBe(visible, BASE_WAITING);
+        headerLogin.shouldBe(visible, BASE_WAITING);
         return this;
     }
 
     public List<ProjectElement> getProjects() {
+        projectElements.shouldHave(com.codeborne.selenide.CollectionCondition.sizeGreaterThan(0));
         return generatePageElements(projectElements, ProjectElement::new);
     }
 
