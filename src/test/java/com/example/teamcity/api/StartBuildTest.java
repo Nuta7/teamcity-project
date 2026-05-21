@@ -1,17 +1,16 @@
 package com.example.teamcity.api;
 
-import com.example.teamcity.enums.BuildState;
-import com.example.teamcity.enums.BuildStatus;
-import com.example.teamcity.common.WireMock;
-import com.example.teamcity.models.Build;
-import com.example.teamcity.models.BuildType;
-import com.example.teamcity.requests.CheckedRequests;
-import com.example.teamcity.requests.checked.CheckedBase;
-import com.example.teamcity.spec.Specifications;
+import com.example.teamcity.api.enums.BuildState;
+import com.example.teamcity.api.enums.BuildStatus;
+import com.example.teamcity.api.models.Build;
+import com.example.teamcity.api.models.BuildType;
+import com.example.teamcity.api.requests.CheckedRequests;
+import com.example.teamcity.api.requests.checked.CheckedBase;
+import com.example.teamcity.api.spec.Specifications;
 import io.qameta.allure.Feature;
 import org.testng.annotations.Test;
 
-import static com.example.teamcity.enums.Endpoint.BUILD_QUEUE;
+import static com.example.teamcity.api.enums.Endpoint.BUILD_QUEUE;
 
 
 @Feature("Start build")

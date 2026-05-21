@@ -1,14 +1,14 @@
 package com.example.teamcity.api;
 
 
-import com.example.teamcity.enums.SearchLocator;
-import com.example.teamcity.models.Projects;
-import com.example.teamcity.requests.CheckedRequests;
-import com.example.teamcity.spec.Specifications;
+import com.example.teamcity.api.enums.SearchLocator;
+import com.example.teamcity.api.models.Projects;
+import com.example.teamcity.api.requests.CheckedRequests;
+import com.example.teamcity.api.spec.Specifications;
 import org.testng.annotations.Test;
 
-import static com.example.teamcity.enums.Endpoint.PROJECTS;
-import static com.example.teamcity.enums.Endpoint.USERS;
+import static com.example.teamcity.api.enums.Endpoint.PROJECTS;
+import static com.example.teamcity.api.enums.Endpoint.USERS;
 
 @Test(groups = {"Regression"})
 public class SearchProjectTest extends BaseApiTest {

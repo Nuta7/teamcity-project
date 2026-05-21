@@ -1,0 +1,27 @@
+package com.example.teamcity.api.requests;
+
+import com.example.teamcity.api.enums.Endpoint;
+import com.example.teamcity.api.models.User;
+import com.example.teamcity.api.requests.unchecked.UncheckedBase;
+import com.example.teamcity.api.spec.Specifications;
+import io.restassured.specification.RequestSpecification;
+
+import java.util.EnumMap;
+
+public class UncheckedRequests {
+    private final EnumMap<Endpoint, UncheckedBase> requests = new EnumMap<>(Endpoint.class);
+
+    public UncheckedRequests(RequestSpecification spec) {
+        for (var endpoint: Endpoint.values()) {
+            requests.put(endpoint, new UncheckedBase(spec, endpoint));
+        }
+    }
+
+    public static UncheckedRequests userRequest (User user){
+        return new UncheckedRequests(Specifications.authSpec(user));
+    }
+
+    public UncheckedBase getRequest(Endpoint endpoint) {
+        return requests.get(endpoint);
+    }
+}
