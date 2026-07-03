@@ -20,8 +20,9 @@ public class BaseUiTest extends BaseTest {
         Configuration.baseUrl = "http://" + Config.getProperty("host");
         // НЕ ПИШИТЕ UI ТЕСТЫ С ЛОКАЛЬНЫМ БРАУЗЕРОМ
         // А ПОТОМ ЗАПУСКАЕТЕ НА REMOTE BROWSER
-        Configuration.remote = Config.getProperty("remote");
+        //Configuration.remote = Config.getProperty("remote");
         Configuration.browserSize = Config.getProperty("browserSize");
+        Configuration.pageLoadStrategy = "none";
 
         Configuration.browserCapabilities.setCapability("selenoid:options", Map.of("enableVNC", false, "enableLog", false));
 
