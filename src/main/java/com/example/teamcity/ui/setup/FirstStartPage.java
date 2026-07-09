@@ -23,12 +23,18 @@ public class FirstStartPage extends BasePage {
     }
 
     public FirstStartPage setupFirstStart() {
-        proceedButton.is(Condition.visible);
-        proceedButton.click();
-        dbTypeSelect.shouldBe(Condition.visible, LONG_WAITING);
-        proceedButton.click();
-        acceptLicenseCheckbox.should(Condition.exist, LONG_WAITING).scrollTo().click();
-        acceptButton.should(Condition.exist, LONG_WAITING).scrollTo().click();
+        $("body").shouldBe(Condition.visible, LONG_WAITING);
+        Selenide.sleep(3000);
+        if (proceedButton.is(Condition.visible)) {
+            proceedButton.click();
+            dbTypeSelect.shouldBe(Condition.visible, LONG_WAITING);
+            proceedButton.click();
+            Selenide.sleep(15000);
+            com.codeborne.selenide.WebDriverRunner.getWebDriver().navigate().refresh();
+        }
+        acceptButton.shouldBe(Condition.visible, LONG_WAITING);
+        com.codeborne.selenide.Selenide.executeJavaScript("arguments[0].click();", acceptButton);
+
         return this;
     }
 }
