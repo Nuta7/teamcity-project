@@ -11,7 +11,7 @@ public class FirstStartPage extends BasePage {
     private final SelenideElement restoreButton = $("#restoreButton");
     private final SelenideElement proceedButton = $("#proceedButton");
     private final SelenideElement dbTypeSelect = $("#dbType");
-    //private final SelenideElement acceptLicenseCheckbox = $("#accept");
+    private final SelenideElement acceptLicenseCheckbox = $("#accept");
     private final SelenideElement acceptButton = $("#acceptLicenseAgreement");
 
     public FirstStartPage() {
@@ -27,7 +27,7 @@ public class FirstStartPage extends BasePage {
         proceedButton.click();
         dbTypeSelect.shouldBe(Condition.visible, LONG_WAITING);
         proceedButton.click();
-        //acceptLicenseCheckbox.should(Condition.exist, LONG_WAITING).scrollTo().click();
+        acceptLicenseCheckbox.should(Condition.exist, LONG_WAITING).scrollTo().click();
         acceptButton.should(Condition.exist, LONG_WAITING).scrollTo().click();
         return this;
     }
