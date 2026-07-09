@@ -12,7 +12,7 @@ public class FirstStartPage extends BasePage {
     private final SelenideElement proceedButton = $("#proceedButton");
     private final SelenideElement dbTypeSelect = $("#dbType");
     private final SelenideElement acceptLicenseCheckbox = $("#accept");
-    private final SelenideElement acceptButton = $("#acceptLicenseAgreement");
+    private final SelenideElement submitButton = $("input[type='submit']");
 
     public FirstStartPage() {
         restoreButton.shouldBe(Condition.visible, LONG_WAITING);
@@ -23,18 +23,11 @@ public class FirstStartPage extends BasePage {
     }
 
     public FirstStartPage setupFirstStart() {
-        $("body").shouldBe(Condition.visible, LONG_WAITING);
-        Selenide.sleep(3000);
-        if (proceedButton.is(Condition.visible)) {
-            proceedButton.click();
-            dbTypeSelect.shouldBe(Condition.visible, LONG_WAITING);
-            proceedButton.click();
-            Selenide.sleep(15000);
-            com.codeborne.selenide.WebDriverRunner.getWebDriver().navigate().refresh();
-        }
-        acceptButton.shouldBe(Condition.visible, LONG_WAITING);
-        com.codeborne.selenide.Selenide.executeJavaScript("arguments[0].click();", acceptButton);
-
+        proceedButton.click();
+        dbTypeSelect.shouldBe(Condition.visible, LONG_WAITING);
+        proceedButton.click();
+        acceptLicenseCheckbox.should(Condition.exist, LONG_WAITING).scrollTo().click();
+        submitButton.click();
         return this;
     }
 }
