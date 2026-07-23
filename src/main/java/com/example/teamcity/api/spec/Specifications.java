@@ -26,6 +26,7 @@ public class Specifications {
                 )
         ));
         requestBuilder.addFilter(new AllureRestAssured());
+
         requestBuilder.setContentType(ContentType.JSON);
         requestBuilder.setAccept(ContentType.JSON);
         return requestBuilder;
