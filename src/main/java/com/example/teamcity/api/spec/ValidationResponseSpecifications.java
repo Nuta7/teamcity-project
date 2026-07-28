@@ -7,10 +7,10 @@ import org.hamcrest.Matchers;
 
 public class ValidationResponseSpecifications {
 
-    public static ResponseSpecification checkProjectAdminCantCreateBuildTypeForAnotherUserProject(String internalId) {
+    public static ResponseSpecification checkProjectAdminCantCreateBuildTypeForAnotherUserProject(String projectId) {
             ResponseSpecBuilder responseSpecBuilder = new ResponseSpecBuilder();
             responseSpecBuilder.expectStatusCode(HttpStatus.SC_FORBIDDEN);
-        responseSpecBuilder.expectBody(Matchers.containsString("You do not have enough permissions to edit project with id: %s".formatted(internalId)));
+        responseSpecBuilder.expectBody(Matchers.containsString("You do not have enough permissions to edit project with id: %s".formatted(projectId)));
         return responseSpecBuilder.build();
         }
 

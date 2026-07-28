@@ -75,7 +75,6 @@ public class BuildTypeTest extends BaseApiTest {
     @Test(description = "Project admin should not be able to create build type for not their project", groups = {"Negative", "Roles"})
     public void projectAdminCreatesBuildTypeForAnotherUserProjectTest() {
         var project1 = superUserCheckRequests.<Project>getRequest(PROJECTS).create(generate(Project.class));
-        var internalId = superUserCheckRequests.<Project>getRequest(PROJECTS).read("id:" + project1.getId() +"?fields=internalId").getInternalId();
         var roleAssignments1 = Roles.builder()
                 .role(List.of(RoleGenerator.generateProjectAdmin(project1.getId())))
                 .build();
@@ -99,7 +98,7 @@ public class BuildTypeTest extends BaseApiTest {
                 .getRequest(BUILD_TYPES)
                 .create(buildType)
                 .then().spec(ValidationResponseSpecifications
-                .checkProjectAdminCantCreateBuildTypeForAnotherUserProject(String.valueOf(internalId)));
+                .checkProjectAdminCantCreateBuildTypeForAnotherUserProject(project1.getId()));
     }
 
     @Test(description = "Build type should be started successfully with a echo 'Hello, world!'", groups = {"Positive", "BuildType"})
