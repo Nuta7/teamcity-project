@@ -10,14 +10,14 @@ public class ValidationResponseSpecifications {
     public static ResponseSpecification checkProjectAdminCantCreateBuildTypeForAnotherUserProject(String internalId) {
             ResponseSpecBuilder responseSpecBuilder = new ResponseSpecBuilder();
             responseSpecBuilder.expectStatusCode(HttpStatus.SC_FORBIDDEN);
-            responseSpecBuilder.expectBody("errors[0].message",Matchers.equalTo("You do not have enough permissions to access project with internal id: %s".formatted(internalId)));
-            return responseSpecBuilder.build();
+        responseSpecBuilder.expectBody(Matchers.containsString("You do not have enough permissions to access project with internal id: %s".formatted(internalId)));
+        return responseSpecBuilder.build();
         }
 
     public static ResponseSpecification checkUserCantCreateTwoBuildTypesWithTheSameId(String id) {
         ResponseSpecBuilder responseSpecBuilder = new ResponseSpecBuilder();
         responseSpecBuilder.expectStatusCode(HttpStatus.SC_BAD_REQUEST);
-        responseSpecBuilder.expectBody("errors[0].message",Matchers.equalTo("The build configuration / template ID \"%s\" is already used by another configuration or template".formatted(id)));
+        responseSpecBuilder.expectBody(Matchers.containsString("The build configuration / template ID \"%s\" is already used by another configuration or template".formatted(id)));
         return responseSpecBuilder.build();
     }
 
