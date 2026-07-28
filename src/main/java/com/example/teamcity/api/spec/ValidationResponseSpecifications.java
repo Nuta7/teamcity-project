@@ -10,7 +10,7 @@ public class ValidationResponseSpecifications {
     public static ResponseSpecification checkProjectAdminCantCreateBuildTypeForAnotherUserProject(String internalId) {
             ResponseSpecBuilder responseSpecBuilder = new ResponseSpecBuilder();
             responseSpecBuilder.expectStatusCode(HttpStatus.SC_FORBIDDEN);
-        responseSpecBuilder.expectBody(Matchers.containsString("You do not have enough permissions to access project with internal id: %s".formatted(internalId)));
+        responseSpecBuilder.expectBody(Matchers.containsString("You do not have enough permissions to edit project with id: %s".formatted(internalId)));
         return responseSpecBuilder.build();
         }
 
