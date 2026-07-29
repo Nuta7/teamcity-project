@@ -32,7 +32,8 @@ public class ProjectsPage extends BasePage {
 
 
     public static ProjectsPage open() {
-        return Selenide.open(PROJECTS_URL, ProjectsPage.class);
+        ProjectsPage page = Selenide.open(PROJECTS_URL, ProjectsPage.class);
+        return page.waitUntilPageIsLoaded();
     }
 
     public ProjectsPage() {
