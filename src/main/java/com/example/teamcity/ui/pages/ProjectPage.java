@@ -10,6 +10,10 @@ public class ProjectPage extends BasePage {
 
     public SelenideElement title = $("h1");
 
+    public ProjectPage() {
+        title.shouldBe(com.codeborne.selenide.Condition.visible, BASE_WAITING);
+    }
+
     public static ProjectPage open(String projectId) {
         return Selenide.open(PROJECT_URL.formatted(projectId), ProjectPage.class);
     }
