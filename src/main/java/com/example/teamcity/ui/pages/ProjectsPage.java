@@ -22,7 +22,7 @@ public class ProjectsPage extends BasePage {
     private SelenideElement spanFavoriteProjects = $("span[class='ProjectPageHeader__title--ih']");
 
     //private SelenideElement headerLogin = $("[class*='MainPanel-module__router']");
-    private SelenideElement headerProjectsPage = $("[class*='ProjectPageHeader-module__title']");
+    private SelenideElement headerProjectsPage = $("[class*='ProjectPageHeader__title']");
 
     private static SelenideElement searchField = $("[data-test='sidebar-search']");
 
