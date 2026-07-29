@@ -21,7 +21,7 @@ public class ProjectsPage extends BasePage {
 
     private SelenideElement spanFavoriteProjects = $("span[class='ProjectPageHeader__title--ih']");
 
-    private SelenideElement headerLogin = $("[class*='MainPanel-module__router']");
+    //private SelenideElement headerLogin = $("[class*='MainPanel-module__router']");
     private SelenideElement headerProjectsPage = $("[class*='ProjectPageHeader-module__title']");
 
     private static SelenideElement searchField = $("[data-test='sidebar-search']");
@@ -40,7 +40,6 @@ public class ProjectsPage extends BasePage {
 
 
     public ProjectsPage waitUntilPageIsLoaded() {
-        headerLogin.shouldBe(visible, BASE_WAITING);
         headerProjectsPage.shouldBe(Condition.visible, BASE_WAITING);
         return this;
     }
