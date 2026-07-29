@@ -74,15 +74,8 @@ runs:
       shell: bash
       run: |
           echo "Extracting Active Super User Token..."
-          CONFIG_FILE="./tmp/teamcity_server/datadir/config/main-config.xml"
-          TOKEN=""
-          if [ -f "$CONFIG_FILE" ]; then
-          TOKEN=$(grep -oE 'authToken="[^"]+"' "$CONFIG_FILE" | head -n 1 | cut -d'"' -f2 | tr -d '\r\n[:space:]')
-          fi
-          if [ -z "$TOKEN" ]; then
-          echo "XML token empty, falling back to docker logs..."
           TOKEN=$(docker logs teamcity-server 2>&1 | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}' | tr -d '"' | tr -d '.' | tr -d '\r\n[:space:]')
-          fi
+          
           echo "SUPER_USER_TOKEN=$TOKEN" >> $GITHUB_ENV
           echo "Token successfully prepared: $TOKEN"
 
