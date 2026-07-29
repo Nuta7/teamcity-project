@@ -12,7 +12,7 @@ public class BuildConfigurationPage extends BasePage{
 
     private static final String BUILD_CONFIGURATION_URL = "/buildConfiguration/%s#all-projects";
 
-    public SelenideElement title = $("h1").$("span:not([data-test='ring-icon'])");
+    public SelenideElement title = $("h1");
 
     public SelenideElement settingsButton = $("[class*='ToggleLink-module__label']");
 

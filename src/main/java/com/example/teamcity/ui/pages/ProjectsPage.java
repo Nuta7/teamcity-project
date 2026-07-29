@@ -17,7 +17,7 @@ import static com.codeborne.selenide.Selenide.$$;
 public class ProjectsPage extends BasePage {
     private static final String PROJECTS_URL = "/favorite/projects";
 
-    private ElementsCollection projectElements = $$("div[class*='Subproject-module__container']");
+    private ElementsCollection projectElements = $$("[data-test='project-item']");
 
     private SelenideElement spanFavoriteProjects = $("span[class='ProjectPageHeader__title--ih']");
 

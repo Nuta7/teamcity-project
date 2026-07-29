@@ -11,8 +11,8 @@ public class ProjectElement extends  BasePageElement {
 
     public ProjectElement(SelenideElement element) {
         super(element);
-        this.name = find("span[class*='MiddleEllipsis']");
         this.link = find("a");
         this.button = find("button");
+        this.name = this.link;
     }
 }

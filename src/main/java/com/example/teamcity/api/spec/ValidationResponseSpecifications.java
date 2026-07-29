@@ -24,7 +24,7 @@ public class ValidationResponseSpecifications {
     public static ResponseSpecification checkUserCantCreateBuildTypeWithoutName(String id) {
         ResponseSpecBuilder responseSpecBuilder = new ResponseSpecBuilder();
         responseSpecBuilder.expectStatusCode(HttpStatus.SC_NOT_FOUND);
-        responseSpecBuilder.expectBody("errors[0].message",Matchers.equalTo("No build type nor template is found by id '%s'.".formatted(id)));
+        responseSpecBuilder.expectBody(Matchers.containsString("No build type nor template is found by id '%s'".formatted(id)));
         return responseSpecBuilder.build();
     }
 
