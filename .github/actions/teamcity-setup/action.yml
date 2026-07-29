@@ -73,18 +73,20 @@ runs:
     - name: Setup superUserToken environment variable
       shell: bash
       run: |
-        echo "Waiting for Super User Token to be generated..."
-        for i in {1..12}; do
-          TOKEN=$(docker logs teamcity-server 2>&1 | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')
-          if [ ! -z "$TOKEN" ]; then
-            echo "SUPER_USER_TOKEN=$TOKEN" >> $GITHUB_ENV
-            echo "Token found successfully!"
-            break
+          echo "Waiting for Super User Token to be generated..."
+          for i in {1..12}; do
+            # Извлекаем токен и принудительно удаляем из него кавычки, точки и символы возврата каретки (\r)
+            TOKEN=$(docker logs teamcity-server 2>&1 | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}' | tr -d '"' | tr -d '.' | tr -d '\r')
+            if [ ! -z "$TOKEN" ]; then
+              echo "SUPER_USER_TOKEN=$TOKEN" >> $GITHUB_ENV
+              echo "Token found successfully: $TOKEN"
+              break
+            fi
+            echo "Token not found yet, retrying in 5 seconds... ($i/12)"
+            sleep 5
+          done
+          
+          if [ -z "$TOKEN" ]; then
+            echo "Error: Super User Token was not generated in time!"
+            exit 1
           fi
-          echo "Token not found yet, retrying in 5 seconds... ($i/12)"
-          sleep 5
-        done
-        if [ -z "$TOKEN" ]; then
-          echo "Error: Super User Token was not generated in time!"
-          exit 1
-        fi
