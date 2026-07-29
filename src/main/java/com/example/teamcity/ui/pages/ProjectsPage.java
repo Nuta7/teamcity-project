@@ -42,9 +42,16 @@ public class ProjectsPage extends BasePage {
 
 
     public ProjectsPage waitUntilPageIsLoaded() {
-        headerProjectsPage.shouldBe(Condition.visible, BASE_WAITING);
+        headerProjectsPage.shouldBe(
+                Condition.or("page header",
+                        Condition.visible,
+                        Condition.text("Welcome to TeamCity")
+                ),
+                BASE_WAITING
+        );
         return this;
     }
+
 
     public List<ProjectElement> getProjects() {
         projectElements.shouldHave(com.codeborne.selenide.CollectionCondition.sizeGreaterThan(0));
