@@ -23,7 +23,7 @@ public class ProjectsPage extends BasePage {
     private SelenideElement spanFavoriteProjects = $("span[class='ProjectPageHeader__title--ih']");
 
     //private SelenideElement headerLogin = $("[class*='MainPanel-module__router']");
-    private SelenideElement headerProjectsPage = $(byText("Favorite Projects"));
+    private SelenideElement headerProjectsPage = com.codeborne.selenide.Selenide.$x("//*[text()='Favorite Projects' or text()='Welcome to TeamCity']");
 
     private static SelenideElement searchField = $("[data-test='sidebar-search']");
 
@@ -42,13 +42,7 @@ public class ProjectsPage extends BasePage {
 
 
     public ProjectsPage waitUntilPageIsLoaded() {
-        headerProjectsPage.shouldBe(
-                Condition.or("page header",
-                        Condition.visible,
-                        Condition.text("Welcome to TeamCity")
-                ),
-                BASE_WAITING
-        );
+        headerProjectsPage.shouldBe(Condition.visible, BASE_WAITING);
         return this;
     }
 
