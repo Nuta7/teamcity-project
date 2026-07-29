@@ -73,12 +73,11 @@ runs:
     - name: Setup superUserToken environment variable
       shell: bash
       run: |
-          echo "Extracting Active Super User Token..."
-          TOKEN=$(docker logs teamcity-server 2>&1 | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}' | tr -d '"' | tr -d '.' | tr -d '\r\n[:space:]')
-          
-          echo "SUPER_USER_TOKEN=$TOKEN" >> $GITHUB_ENV
-          echo "Token successfully prepared: $TOKEN"
+        echo "Extracting Active Super User Token..."
+        TOKEN=$(docker logs teamcity-server 2>&1 | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}' | tr -d '"' | tr -d '.' | tr -d '\r\n[:space:]')
+        echo "SUPER_USER_TOKEN=$TOKEN" >> $GITHUB_ENV
+        echo "Token successfully prepared: $TOKEN"
 
-          - name: Set up superUserToken config property
-            shell: bash
-            run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
+    - name: Set up superUserToken config property
+      shell: bash
+      run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
