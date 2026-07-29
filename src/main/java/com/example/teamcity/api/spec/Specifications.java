@@ -5,6 +5,7 @@ import com.example.teamcity.api.models.User;
 import com.github.viclovsky.swagger.coverage.FileSystemOutputWriter;
 import com.github.viclovsky.swagger.coverage.SwaggerCoverageRestAssured;
 import io.qameta.allure.restassured.AllureRestAssured;
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
@@ -33,7 +34,8 @@ public class Specifications {
 
     public static RequestSpecification superUserAuth() {
         var requestBuilder = reqBuilder();
-        requestBuilder.setBaseUri("http://%s:%s@%s/httpAuth".formatted("", Config.getProperty("superUserToken"), Config.getProperty("host")));
+        requestBuilder.setBaseUri("http://%s/httpAuth".formatted(Config.getProperty("host")));
+        requestBuilder.setAuth(RestAssured.preemptive().basic("", Config.getProperty("superUserToken")));
         return requestBuilder.build();
     }
 
