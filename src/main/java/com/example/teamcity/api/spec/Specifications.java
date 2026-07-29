@@ -34,12 +34,7 @@ public class Specifications {
 
     public static RequestSpecification superUserAuth() {
         var requestBuilder = reqBuilder();
-        requestBuilder.setBaseUri("http://%s".formatted(Config.getProperty("host")));
-        requestBuilder.setBasePath("/httpAuth");
-        String rawAuth = ":" + Config.getProperty("superUserToken");
-        String encodedAuth = java.util.Base64.getEncoder().encodeToString(rawAuth.getBytes());
-        requestBuilder.addHeader("Authorization", "Basic " + encodedAuth);
-
+        requestBuilder.setBaseUri("http://:%s@%s".formatted(Config.getProperty("superUserToken"), Config.getProperty("host")));
         return requestBuilder.build();
     }
 
