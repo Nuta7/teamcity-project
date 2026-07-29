@@ -36,12 +36,12 @@ public class ProjectsPage extends BasePage {
     }
 
     public ProjectsPage() {
-        headerProjectsPage.shouldBe(Condition.visible, BASE_WAITING);
     }
 
 
     public ProjectsPage waitUntilPageIsLoaded() {
         headerLogin.shouldBe(visible, BASE_WAITING);
+        headerProjectsPage.shouldBe(Condition.visible, BASE_WAITING);
         return this;
     }
 
