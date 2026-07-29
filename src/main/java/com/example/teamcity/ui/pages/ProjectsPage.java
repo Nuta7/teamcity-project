@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import java.util.List;
 
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -22,7 +23,7 @@ public class ProjectsPage extends BasePage {
     private SelenideElement spanFavoriteProjects = $("span[class='ProjectPageHeader__title--ih']");
 
     //private SelenideElement headerLogin = $("[class*='MainPanel-module__router']");
-    private SelenideElement headerProjectsPage = $("com.codeborne.selenide.Selectors.byText(\"Favorite Projects\")");
+    private SelenideElement headerProjectsPage = $(byText("Favorite Projects"));
 
     private static SelenideElement searchField = $("[data-test='sidebar-search']");
 
