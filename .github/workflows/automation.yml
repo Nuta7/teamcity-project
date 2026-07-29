@@ -42,9 +42,7 @@ jobs:
         if: ${{ inputs.package == 'ui' }} # Сохраняем только при запуске UI тестов
         with:
             name: selenide-reports
-            path: |
-              target/reports/tests/
-              target/screenshots/
+            path: build/reports/tests/
             retention-days: 7
 
         # Создаем репорт с покрытием API тестов, основанном на Swagger.
