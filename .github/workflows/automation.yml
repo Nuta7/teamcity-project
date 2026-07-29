@@ -37,6 +37,16 @@ jobs:
         # Указываем группу, чтобы не запустить тесты, связанные с сетапом TeamCity
         run: ./mvnw test -Dtest='com.example.teamcity.${{ inputs.package }}.**' -Dgroups=Regression
 
+      - name: Save Selenide Screenshots and Reports
+        uses: actions/upload-artifact@v4
+        if: ${{ inputs.package == 'ui' }} # Сохраняем только при запуске UI тестов
+        with:
+            name: selenide-reports
+            path: |
+              target/reports/tests/
+              target/screenshots/
+            retention-days: 7
+
         # Создаем репорт с покрытием API тестов, основанном на Swagger.
         # Документация: https://github.com/viclovsky/swagger-coverage
         # Обязательно добавить фильтр SwaggerCoverageRestAssured в RestAssured
