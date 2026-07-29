@@ -11,7 +11,7 @@ public class ProjectElement extends  BasePageElement {
 
     public ProjectElement(SelenideElement element) {
         super(element);
-        this.link = find("a");
+        this.link = find("a[href*='projectId=']");
         this.button = find("button");
         this.name = this.link;
     }
