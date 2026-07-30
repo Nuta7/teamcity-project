@@ -57,4 +57,5 @@ public class ProjectsPage extends BasePage {
         $(By.linkText(projectName)).shouldBe(visible, BASE_WAITING).click();
         return new ProjectPage();
     }
+
 }
