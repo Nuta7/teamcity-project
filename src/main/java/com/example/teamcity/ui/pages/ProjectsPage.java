@@ -25,6 +25,7 @@ public class ProjectsPage extends BasePage {
     //private SelenideElement headerLogin = $("[class*='MainPanel-module__router']");
     private SelenideElement headerProjectsPage = com.codeborne.selenide.Selenide.$x("//*[text()='Favorite Projects' or text()='Welcome to TeamCity']");
 
+
     private static SelenideElement searchField = $("[data-test='sidebar-search']");
 
     // ElementCollection -> List<ProjectElement>
