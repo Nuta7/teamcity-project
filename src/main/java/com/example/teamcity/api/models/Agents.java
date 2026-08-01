@@ -15,5 +15,5 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Agents extends BaseModel{
     private Integer count;
-    private List<Agent> agents;
+    private List<Agent> agent;
 }
