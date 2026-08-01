@@ -9,6 +9,7 @@ import com.example.teamcity.api.requests.UncheckedRequests;
 import com.example.teamcity.api.requests.unchecked.UncheckedBase;
 import com.example.teamcity.api.spec.Specifications;
 import com.example.teamcity.api.spec.ValidationResponseSpecifications;
+import org.awaitility.Awaitility;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -101,7 +102,7 @@ public class BuildTypeTest extends BaseApiTest {
                 .checkProjectAdminCantCreateBuildTypeForAnotherUserProject(project1.getId()));
     }
 
-    @Test(description = "Build type should be started successfully with a echo 'Hello, world!'", groups = {"Positive", "BuildType"})
+    @Test(description = "Build type should be started successfully with a echo 'Hello, world!'", groups = {"Positive", "BuildType"}, dependsOnGroups = {"SetupAgent"})
     public void startBuildTypeWithAMessage(){
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
         var userCheckRequests = new CheckedRequests(Specifications.authSpec(testData.getUser()));
@@ -130,10 +131,17 @@ public class BuildTypeTest extends BaseApiTest {
                                 .build())
                         .build()
         );
+        Awaitility.await()
+                .atMost(java.time.Duration.ofSeconds(60))
+                .pollInterval(java.time.Duration.ofSeconds(5))
+                .until(() -> {
+                    var buildStateInfo = userCheckRequests.<Build>getRequest(BUILD_QUEUE).read("id:" + buildResponse.getId());
+                    return buildStateInfo.getState() == BuildState.FINISHED;
+                });
 
-        var createdBuild = userCheckRequests.<Build>getRequest(BUILD_QUEUE).read("id:" + String.valueOf(buildResponse.getId()));
+        var createdBuild = userCheckRequests.<Build>getRequest(BUILD_QUEUE).read("id:" + buildResponse.getId());
 
         softy.assertEquals(testData.getBuildType().getId(), createdBuild.getBuildTypeId());
-        softy.assertEquals(BuildState.QUEUED, createdBuild.getState());
+        softy.assertEquals(BuildState.FINISHED, createdBuild.getState());
     }
 }

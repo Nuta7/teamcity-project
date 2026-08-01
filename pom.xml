@@ -20,6 +20,7 @@
         <wiremock.version>3.9.1</wiremock.version>
         <selenide.version>7.4.3</selenide.version>
         <swagger-coverage-version>1.5.0</swagger-coverage-version>
+        <awaitility-version>4.2.2</awaitility-version>
     </properties>
 
     <dependencies>
@@ -87,5 +88,12 @@
             <artifactId>allure-rest-assured</artifactId>
             <version>${allure.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility-version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>
