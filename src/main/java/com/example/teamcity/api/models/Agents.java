@@ -16,4 +16,5 @@ import java.util.List;
 public class Agents extends BaseModel{
     private Integer count;
     private List<Agent> agent;
+
 }
