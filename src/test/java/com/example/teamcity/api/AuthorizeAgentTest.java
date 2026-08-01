@@ -2,7 +2,7 @@ package com.example.teamcity.api;
 
 
 import com.example.teamcity.api.enums.Endpoint;
-import com.example.teamcity.api.models.Agent;
+import com.example.teamcity.api.models.Agents;
 import com.example.teamcity.api.models.AuthorizedInfo;
 import com.example.teamcity.api.models.Comment;
 import com.example.teamcity.api.requests.CheckedRequests;
@@ -19,8 +19,8 @@ public class AuthorizeAgentTest extends BaseApiTest {
     public void authorizeAgentTest() {
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
         var userCheckRequests = new CheckedRequests(Specifications.authSpec(testData.getUser()));
-        Agent agent = (Agent) userCheckRequests.getRequest(AGENTS).search("authorized:false");
-        int agentId = agent.getId();
+        Agents agentsCollection = (Agents) userCheckRequests.getRequest(AGENTS).search("authorized:false");
+        int agentId = agentsCollection.getAgents().get(0).getId();
 
         var authInfo = AuthorizedInfo.builder()
                 .status(true)
