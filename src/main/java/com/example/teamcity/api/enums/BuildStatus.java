@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public enum BuildStatus {
     SUCCESS ("SUCCESS"),
-    UNKNOWN ("UKNOWN");
+    UNKNOWN ("UNKNOWN");
     @JsonValue
     private final String value;
 }
