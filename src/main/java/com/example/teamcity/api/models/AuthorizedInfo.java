@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthorizedInfo extends BaseModel {
-    private Boolean value;
+    private Boolean status;
     private Comment comment;
 }

@@ -23,7 +23,7 @@ public class AuthorizeAgentTest extends BaseApiTest {
         int agentId = agentsCollection.getAgent().get(0).getId();
 
         var authInfo = AuthorizedInfo.builder()
-                .value(true)
+                .status(true)
                 .comment(Comment.builder().text("Authorized via API automation test").build())
                 .build();
 
