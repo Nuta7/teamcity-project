@@ -36,6 +36,7 @@ public class UncheckedBase extends Request implements CrudInterface, SearchInter
     public Response update(String locator, BaseModel model) {
         return RestAssured
                 .given()
+                .urlEncodingEnabled(false)
                 .body(model)
                 .spec(spec)
                 .put(endpoint.getUrl() + "/" + locator);

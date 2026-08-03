@@ -29,7 +29,7 @@ public class AuthorizeAgentTest extends BaseApiTest {
 
         UncheckedRequests.userRequest(testData.getUser())
                 .getRequest(AGENTS)
-                .update("authorizedInfo?locator=id:" + agentId, authInfo)
+                .update("id:" + agentId + "/authorizedInfo", authInfo)
                 .then().assertThat().statusCode(HttpStatus.SC_OK);
 
         boolean isAuthorized = UncheckedRequests.userRequest(testData.getUser())
