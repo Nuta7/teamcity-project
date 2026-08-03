@@ -20,7 +20,7 @@ public class AuthorizeAgentTest extends BaseApiTest {
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
         var userCheckRequests = new CheckedRequests(Specifications.authSpec(testData.getUser()));
         Agents agentsCollection = (Agents) userCheckRequests.getRequest(AGENTS).search("authorized:false");
-        int agentId = agentsCollection.getAgents().get(0).getId();
+        int agentId = agentsCollection.getAgent().get(0).getId();
 
         var authInfo = AuthorizedInfo.builder()
                 .status(true)
